@@ -4,7 +4,11 @@
     height: { cm: [140, 210], ftin: [55, 83] },   // ftin slider counts inches
     weight: { kg: [40, 140], lb: [90, 310] }
   };
-  const state = { sex: "men", cm: 175, kg: 72, hUnit: "cm", wUnit: "kg" };
+  const state = { sex: "men", cm: 175, kg: 72, hUnit: "cm", wUnit: "kg", fit: "as-cut", shape: "average", step: 1 };
+  let result = null;
+  const FIT_HELP = { close: "Trimmer than the garment was cut for.", "as-cut": "The fit the garment was made for.", relaxed: "Roomier than the garment was cut for." };
+  const SHAPE_HELP = { slim: "Narrower through the waist than your chest.", average: "Waist and chest in proportion.", fuller: "Fuller through the waist and hips." };
+  const FIT_NAME = { close: "a close fit", "as-cut": "the fit it was cut for", relaxed: "a relaxed fit" };
   let root, opener;
 
   const el = (html) => { const t = document.createElement("template"); t.innerHTML = html.trim(); return t.content.firstElementChild; };
@@ -23,9 +27,10 @@
         <div class="adv__scroll">
           <div class="adv__prod"><span class="adv__thumb" id="adv-thumb"></span>
             <div><strong>${P.title}</strong><br><span>${P.currency}${P.price.toFixed(2)}</span></div></div>
-          <div class="adv__progress" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
-          <p class="adv__step">Step 1 of 3 · Measurements</p>
-          <h3 class="adv__h">Let’s find your fit</h3>
+          <div class="adv__progress" id="adv-progress" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
+          <p class="adv__step" id="adv-step">Step 1 of 3 · Measurements</p>
+          <div data-pane="1">
+          <h3 class="adv__h" tabindex="-1">Let’s find your fit</h3>
           <p class="adv__sub">Two measurements, about ten seconds.</p>
 
           <div class="seg" role="radiogroup" aria-label="Sizing type">
@@ -47,14 +52,34 @@
             <div><span class="est__k">Live estimate</span><span class="est__s">Refines in the next steps</span></div>
             <strong class="est__v" id="adv-est">M</strong>
           </div>
+          </div>
+
+          <div data-pane="2" hidden>
+            <h3 class="adv__h" tabindex="-1">How do you like it to fit?</h3>
+            <p class="adv__sub">We’ll aim for this feel.</p>
+            ${opts("fit", "Fit", [["close", "Close"], ["as-cut", "As cut"], ["relaxed", "Relaxed"]])}
+            ${opts("shape", "Through the middle", [["slim", "Slimmer"], ["average", "Average"], ["fuller", "Fuller"]])}
+          </div>
+
+          <div data-pane="3" hidden>
+            <h3 class="adv__h" tabindex="-1">Your size</h3>
+            <div id="adv-result"></div>
+          </div>
         </div>
         <footer class="adv__foot">
           <button type="button" class="adv__go" id="adv-continue">Continue →</button>
-          <p class="adv__note" id="adv-note" role="status"></p>
+          <button type="button" class="adv__back" id="adv-back" hidden>Back</button>
+          <p class="adv__note" id="adv-note"></p>
         </footer>
       </section>
     </div>`);
     document.body.appendChild(root);
+  }
+
+  function opts(key, label, items) {
+    return `<div class="field" data-field="${key}"><p class="field__l" id="fl-${key}">${label}</p>
+      <div class="opts" role="radiogroup" aria-labelledby="fl-${key}">${items.map(([v, t]) => `<button type="button" role="radio" data-${key}="${v}">${t}</button>`).join("")}</div>
+      <p class="field__h" data-help="${key}"></p></div>`;
   }
 
   function metric(key, label, units) {
@@ -99,7 +124,11 @@
     });
     // figure grows slightly with height
     root.querySelector("#adv-fig").style.transform = `scaleY(${(0.9 + ((state.cm - 140) / 70) * 0.2).toFixed(3)})`;
-    root.querySelector("#adv-est").textContent = F.estimateSize(state.sex, state.cm, state.kg);
+    root.querySelector("#adv-est").textContent = F.recommend(state).size;
+    ["fit", "shape"].forEach((k) => {
+      root.querySelectorAll(`[data-${k}]`).forEach((b) => b.setAttribute("aria-checked", String(b.dataset[k] === state[k])));
+      root.querySelector(`[data-help="${k}"]`).textContent = (k === "fit" ? FIT_HELP : SHAPE_HELP)[state[k]];
+    });
   }
 
   function valueText(k) {
@@ -124,10 +153,10 @@
         const v = Math.min(+input.max, Math.max(+input.min, Math.round(toSlider(k)) + +t.dataset.dir));
         fromSlider(k, v); return render();
       }
-      if (t.id === "adv-continue") {
-        root.querySelector("#adv-note").textContent = "Fit preference is the next step.";
-        document.dispatchEvent(new CustomEvent("sizeadvisor:continue", { detail: { ...state } }));
-      }
+      if (t.dataset.fit) { state.fit = t.dataset.fit; return render(); }
+      if (t.dataset.shape) { state.shape = t.dataset.shape; return render(); }
+      if (t.id === "adv-continue") return next();
+      if (t.id === "adv-back") return goto(1);
     });
     root.addEventListener("input", (e) => {
       const m = e.target.closest("[data-metric]");
@@ -143,13 +172,52 @@
     });
   }
 
+  const STEP_LABEL = ["", "Step 1 of 3 · Measurements", "Step 2 of 3 · Fit preference", "Your recommendation"];
+  function goto(n) {
+    state.step = n;
+    root.querySelectorAll("[data-pane]").forEach((p) => { p.hidden = +p.dataset.pane !== n; });
+    root.querySelectorAll("#adv-progress i").forEach((i, k) => i.classList.toggle("on", k < n));
+    root.querySelector("#adv-step").textContent = STEP_LABEL[n];
+    const go = root.querySelector("#adv-continue"), back = root.querySelector("#adv-back"), note = root.querySelector("#adv-note");
+    go.textContent = n === 1 ? "Continue →" : n === 2 ? "Show my size" : "Use size " + result.size;
+    back.hidden = n === 1;
+    back.textContent = n === 3 ? "Edit details" : "Back";
+    note.textContent = n === 2 ? "Your answers stay on this device. Nothing is sent anywhere." : "";
+    render();
+    const sc = root.querySelector(".adv__scroll"); sc.scrollTop = 0;
+    root.querySelector(`[data-pane="${n}"] .adv__h`).focus({ preventScroll: true });
+  }
+
+  function next() {
+    if (state.step === 1) return goto(2);
+    if (state.step === 2) {
+      result = F.recommend(state);
+      renderResult();
+      document.dispatchEvent(new CustomEvent("sizeadvisor:result", { detail: { ...result, answers: { ...state } } }));
+      return goto(3);
+    }
+    window.Store.selectSize(result.size);
+    close();
+  }
+
+  // Interim result screen. Phase 4 replaces this with the ring, gauges and size chart.
+  const STATUS = { snug: "A little snug", roomy: "A little roomy" };
+  function renderResult() {
+    const ok = "Right for " + FIT_NAME[state.fit];
+    root.querySelector("#adv-result").innerHTML = `
+      <p class="res__size">${result.size}</p><p class="res__lbl">Best fit</p>
+      <p class="res__msg">${result.size} lines up best for ${FIT_NAME[state.fit]} through the body.${result.note ? " " + result.note : ""}</p>
+      <ul class="res__rows">${result.measurements.map((m) =>
+        `<li><span class="dot dot--${m.status}"></span><b>${m.label}</b><span>${m.status === "ok" ? ok : STATUS[m.status]}</span></li>`).join("")}</ul>
+      <p class="res__fine">Based on your height, weight and shape answers compared with this product’s size chart. It’s a guide, not a guarantee.</p>`;
+  }
+
   function open() {
     opener = document.activeElement;
     const c = window.Store.getState();
     root.querySelector("#adv-thumb").style.background = P.colours[c.colour].hex;
-    root.querySelector("#adv-note").textContent = "";
-    render();
     root.hidden = false;
+    goto(1);
     document.body.classList.add("adv-lock");
     requestAnimationFrame(() => root.classList.add("is-open"));
     root.querySelector(".adv__panel").focus();
@@ -163,5 +231,5 @@
 
   build(); bind();
   document.addEventListener("sizeadvisor:open", open);
-  window.SizeAdvisor = { open, close, getState: () => ({ ...state }) };
+  window.SizeAdvisor = { open, close, getState: () => ({ ...state }), getResult: () => result };
 })();

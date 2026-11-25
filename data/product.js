@@ -21,6 +21,18 @@ window.PRODUCT = {
     { label: "XL", available: true },
     { label: "XXL", available: true }
   ],
+  // Garment measurements, as printed on the size chart (inches).
+  sizeChart: {
+    unit: "in",
+    rows: [
+      { size: "XS", chest: 41.7, waist: 39.4, hips: 39.4, length: 26.0 },
+      { size: "S", chest: 44.1, waist: 41.7, hips: 41.7, length: 26.8 },
+      { size: "M", chest: 46.5, waist: 44.1, hips: 44.1, length: 27.6 },
+      { size: "L", chest: 48.8, waist: 46.5, hips: 46.5, length: 28.3 },
+      { size: "XL", chest: 51.2, waist: 48.8, hips: 48.8, length: 29.1 },
+      { size: "XXL", chest: 53.5, waist: 51.2, hips: 51.2, length: 29.9 }
+    ]
+  },
   details: [
     { title: "Materials & care", open: true,
       body: "100% cotton loopback fleece, 480 gsm, garment dyed. Wash cold inside out, tumble dry low." },
