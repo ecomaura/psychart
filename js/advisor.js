@@ -5,7 +5,28 @@
     weight: { kg: [40, 140], lb: [90, 310] }
   };
   const state = { sex: "men", cm: 175, kg: 72, hUnit: "cm", wUnit: "kg", fit: "as-cut", shape: "average", step: 1 };
-  let result = null;
+  let result = null, chartUnit = "in";
+  const KEY = "psychart.advisor.v1";
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+  function load() {
+    try {
+      const s = JSON.parse(localStorage.getItem(KEY) || "null"); if (!s) return;
+      if (["men", "women"].includes(s.sex)) state.sex = s.sex;
+      if (["cm", "ftin"].includes(s.hUnit)) state.hUnit = s.hUnit;
+      if (["kg", "lb"].includes(s.wUnit)) state.wUnit = s.wUnit;
+      if (["close", "as-cut", "relaxed"].includes(s.fit)) state.fit = s.fit;
+      if (["slim", "average", "fuller"].includes(s.shape)) state.shape = s.shape;
+      if (+s.cm) state.cm = clamp(+s.cm, 140, 210);
+      if (+s.kg) state.kg = clamp(+s.kg, 40, 140);
+    } catch (e) {}
+  }
+  function save() {
+    try {
+      const { sex, cm, kg, hUnit, wUnit, fit, shape } = state;
+      localStorage.setItem(KEY, JSON.stringify({ sex, cm, kg, hUnit, wUnit, fit, shape }));
+    } catch (e) {}
+  }
+  load();
   const FIT_HELP = { close: "Trimmer than the garment was cut for.", "as-cut": "The fit the garment was made for.", relaxed: "Roomier than the garment was cut for." };
   const SHAPE_HELP = { slim: "Narrower through the waist than your chest.", average: "Waist and chest in proportion.", fuller: "Fuller through the waist and hips." };
   const FIT_NAME = { close: "a close fit", "as-cut": "the fit it was cut for", relaxed: "a relaxed fit" };
@@ -55,20 +76,29 @@
           </div>
 
           <div data-pane="2" hidden>
-            <h3 class="adv__h" tabindex="-1">How do you like it to fit?</h3>
-            <p class="adv__sub">We’ll aim for this feel.</p>
-            ${opts("fit", "Fit", [["close", "Close"], ["as-cut", "As cut"], ["relaxed", "Relaxed"]])}
+            <h3 class="adv__h" tabindex="-1">What’s your build?</h3>
+            <p class="adv__sub">This fine-tunes waist and hip measurements.</p>
             ${opts("shape", "Through the middle", [["slim", "Slimmer"], ["average", "Average"], ["fuller", "Fuller"]])}
           </div>
 
           <div data-pane="3" hidden>
+            <h3 class="adv__h" tabindex="-1">How do you like it to fit?</h3>
+            <p class="adv__sub">We’ll aim for this feel.</p>
+            ${opts("fit", "Fit", [["close", "Close"], ["as-cut", "As cut"], ["relaxed", "Relaxed"]])}
+          </div>
+
+          <div data-pane="4" hidden>
             <h3 class="adv__h" tabindex="-1">Your size</h3>
             <div id="adv-result"></div>
           </div>
         </div>
-        <footer class="adv__foot">
+        <p class="sr" id="adv-live" role="status" aria-live="polite"></p>
+        <footer class="adv__foot" id="adv-foot">
           <button type="button" class="adv__go" id="adv-continue">Continue →</button>
-          <button type="button" class="adv__back" id="adv-back" hidden>Back</button>
+          <div class="adv__links">
+            <button type="button" class="adv__back" id="adv-select" hidden></button>
+            <button type="button" class="adv__back" id="adv-back" hidden>Back</button>
+          </div>
           <p class="adv__note" id="adv-note"></p>
         </footer>
       </section>
@@ -125,6 +155,7 @@
     // figure grows slightly with height
     root.querySelector("#adv-fig").style.transform = `scaleY(${(0.9 + ((state.cm - 140) / 70) * 0.2).toFixed(3)})`;
     root.querySelector("#adv-est").textContent = F.recommend(state).size;
+    save();
     ["fit", "shape"].forEach((k) => {
       root.querySelectorAll(`[data-${k}]`).forEach((b) => b.setAttribute("aria-checked", String(b.dataset[k] === state[k])));
       root.querySelector(`[data-help="${k}"]`).textContent = (k === "fit" ? FIT_HELP : SHAPE_HELP)[state[k]];
@@ -155,8 +186,11 @@
       }
       if (t.dataset.fit) { state.fit = t.dataset.fit; return render(); }
       if (t.dataset.shape) { state.shape = t.dataset.shape; return render(); }
+      if (t.dataset.pick) { state.pick = t.dataset.pick; renderResult(); const b = root.querySelector(`[data-pick="${state.pick}"]`); if (b) b.focus(); return syncResultFoot(); }
+      if (t.dataset.cu) { chartUnit = t.dataset.cu; renderResult(); const b = root.querySelector(`[data-cu="${chartUnit}"]`); if (b) b.focus(); return; }
       if (t.id === "adv-continue") return next();
-      if (t.id === "adv-back") return goto(1);
+      if (t.id === "adv-select") { window.Store.selectSize(pickedSize()); return close(); }
+      if (t.id === "adv-back") return goto(state.step === 4 ? 1 : state.step - 1);
     });
     root.addEventListener("input", (e) => {
       const m = e.target.closest("[data-metric]");
@@ -164,6 +198,11 @@
     });
     root.addEventListener("keydown", (e) => {
       if (e.key === "Escape") return close();
+      if (/^Arrow(Left|Right|Up|Down)$/.test(e.key) && e.target.getAttribute("role") === "radio") {
+        const g = [...e.target.closest("[role=radiogroup]").querySelectorAll("[role=radio]:not(:disabled)")];
+        const i = g.indexOf(e.target), d = /Right|Down/.test(e.key) ? 1 : -1, n = g[(i + d + g.length) % g.length];
+        e.preventDefault(); n.focus(); return n.click();
+      }
       if (e.key !== "Tab") return;
       const f = [...root.querySelectorAll("button,input")].filter((n) => !n.disabled && n.offsetParent !== null);
       const first = f[0], last = f[f.length - 1];
@@ -172,44 +211,76 @@
     });
   }
 
-  const STEP_LABEL = ["", "Step 1 of 3 · Measurements", "Step 2 of 3 · Fit preference", "Your recommendation"];
+  const STEP_LABEL = ["", "Step 1 of 3 · Measurements", "Step 2 of 3 · Body shape", "Step 3 of 3 · Fit preference", "Your recommendation"];
+  const pickedSize = () => state.pick || result.size;
+  function syncResultFoot() {
+    const p = pickedSize();
+    root.querySelector("#adv-continue").textContent = "Add size " + p + " to bag";
+    root.querySelector("#adv-select").textContent = "Select " + p + " on the page";
+  }
   function goto(n) {
     state.step = n;
     root.querySelectorAll("[data-pane]").forEach((p) => { p.hidden = +p.dataset.pane !== n; });
-    root.querySelectorAll("#adv-progress i").forEach((i, k) => i.classList.toggle("on", k < n));
+    root.querySelectorAll("#adv-progress i").forEach((i, k) => i.classList.toggle("on", k < Math.min(n, 3)));
     root.querySelector("#adv-step").textContent = STEP_LABEL[n];
-    const go = root.querySelector("#adv-continue"), back = root.querySelector("#adv-back"), note = root.querySelector("#adv-note");
-    go.textContent = n === 1 ? "Continue →" : n === 2 ? "Show my size" : "Use size " + result.size;
+    const go = root.querySelector("#adv-continue"), back = root.querySelector("#adv-back"), sel = root.querySelector("#adv-select"), note = root.querySelector("#adv-note");
+    go.textContent = n < 3 ? "Continue →" : "Show my size";
     back.hidden = n === 1;
-    back.textContent = n === 3 ? "Edit details" : "Back";
-    note.textContent = n === 2 ? "Your answers stay on this device. Nothing is sent anywhere." : "";
+    back.textContent = n === 4 ? "Edit details" : "Back";
+    sel.hidden = n !== 4;
+    root.querySelector("#adv-foot").classList.toggle("is-result", n === 4);
+    note.textContent = n === 3 ? "Your answers stay on this device. Nothing is sent anywhere." : "";
     render();
-    const sc = root.querySelector(".adv__scroll"); sc.scrollTop = 0;
+    if (n === 4) syncResultFoot();
+    root.querySelector(".adv__scroll").scrollTop = 0;
     root.querySelector(`[data-pane="${n}"] .adv__h`).focus({ preventScroll: true });
   }
 
   function next() {
-    if (state.step === 1) return goto(2);
-    if (state.step === 2) {
-      result = F.recommend(state);
+    if (state.step < 3) return goto(state.step + 1);
+    if (state.step === 3) {
+      result = F.recommend(state); state.pick = result.size; chartUnit = "in";
       renderResult();
+      const live = result.measurements.map((m) => m.label + " " + (m.status === "ok" ? "just right" : m.status)).join(", ");
+      root.querySelector("#adv-live").textContent = "Your size is " + result.size + ". " + live + ".";
       document.dispatchEvent(new CustomEvent("sizeadvisor:result", { detail: { ...result, answers: { ...state } } }));
-      return goto(3);
+      return goto(4);
     }
-    window.Store.selectSize(result.size);
+    window.Store.addToBag(pickedSize());
     close();
   }
 
-  // Interim result screen. Phase 4 replaces this with the ring, gauges and size chart.
   const STATUS = { snug: "A little snug", roomy: "A little roomy" };
+  const SAY = { ok: "just right", snug: "snug", roomy: "roomy" };
   function renderResult() {
-    const ok = "Right for " + FIT_NAME[state.fit];
+    const pick = pickedSize(), best = pick === result.size, r = result.bySize[pick];
+    const ok = "Right for " + FIT_NAME[state.fit], wasOpen = !!root.querySelector(".chart[open]");
+    const msg = best
+      ? `${pick} lines up best for ${FIT_NAME[state.fit]} through the body.${result.note ? " " + result.note : ""}`
+      : `${result.size} is our best match. Size ${pick} changes how it sits: see the gauges.`;
+    const isAvail = (z) => (P.sizes.find((x) => x.label === z) || { available: true }).available;
+    const k = chartUnit === "in" ? 1 : F.IN;
+    const rows = P.sizeChart.rows;
     root.querySelector("#adv-result").innerHTML = `
-      <p class="res__size">${result.size}</p><p class="res__lbl">Best fit</p>
-      <p class="res__msg">${result.size} lines up best for ${FIT_NAME[state.fit]} through the body.${result.note ? " " + result.note : ""}</p>
-      <ul class="res__rows">${result.measurements.map((m) =>
-        `<li><span class="dot dot--${m.status}"></span><b>${m.label}</b><span>${m.status === "ok" ? ok : STATUS[m.status]}</span></li>`).join("")}</ul>
-      <p class="res__fine">Based on your height, weight and shape answers compared with this product’s size chart. It’s a guide, not a guarantee.</p>`;
+      <div class="ring" role="img" aria-label="Size ${pick}, ${best ? "best fit" : "your pick"}"><strong>${pick}</strong><span>${best ? "Best fit" : "Your pick"}</span></div>
+      <p class="res__msg">${msg}</p>
+      <ul class="res__rows">${r.measurements.map((m) =>
+        `<li><span class="dot dot--${m.status}" aria-hidden="true"></span><b>${m.label}</b><span>${m.status === "ok" ? ok : STATUS[m.status]}</span></li>`).join("")}</ul>
+      <p class="res__fine">Based on your height, weight and shape answers compared with this product’s size chart. It’s a guide, not a guarantee.</p>
+      <div class="pick" role="radiogroup" aria-label="Choose a size">${rows.map((x) =>
+        `<div class="pick__c"><span class="pick__you">${x.size === result.size ? "You" : ""}</span><button type="button" role="radio" data-pick="${x.size}" aria-checked="${x.size === pick}" ${isAvail(x.size) ? "" : "disabled"} aria-label="${x.size}${x.size === result.size ? ", recommended" : ""}">${x.size}</button></div>`).join("")}</div>
+      <div class="gauges">${r.measurements.map((m) =>
+        `<div class="g"><span class="g__l">${m.label}</span><span class="g__t" role="img" aria-label="${m.label}: ${SAY[m.status]}"><i style="left:${(m.gauge * 100).toFixed(0)}%"></i></span></div>`).join("")}
+        <div class="g g--k"><span></span><span class="g__key"><i>Snug</i><i>Just right</i><i>Roomy</i></span></div></div>
+      <details class="chart"${wasOpen ? " open" : ""}><summary>Size chart</summary>
+        <div class="chart__u" role="radiogroup" aria-label="Chart units">
+          <button type="button" role="radio" data-cu="cm" aria-checked="${chartUnit === "cm"}">cm</button>
+          <button type="button" role="radio" data-cu="in" aria-checked="${chartUnit === "in"}">in</button></div>
+        <div class="chart__w"><table><caption class="sr">Garment measurements in ${chartUnit === "in" ? "inches" : "centimetres"}</caption>
+          <thead><tr><th scope="col">Size</th><th scope="col">Chest</th><th scope="col">Waist</th><th scope="col">Hips</th><th scope="col">Length</th></tr></thead>
+          <tbody>${rows.map((x) => `<tr${x.size === pick ? ' class="is-pick"' : ""}><th scope="row">${x.size}</th>${["chest", "waist", "hips", "length"].map((m) =>
+            `<td>${chartUnit === "in" ? (x[m] * k).toFixed(1) : Math.round(x[m] * k)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>
+        <p class="res__fine">Garment measurements in ${chartUnit === "in" ? "inches" : "centimetres"}.</p></details>`;
   }
 
   function open() {

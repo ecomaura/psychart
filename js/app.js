@@ -80,7 +80,12 @@
     "<details" + (d.open ? " open" : "") + "><summary>" + d.title + "</summary><p>" + d.body + "</p></details>"
   ).join("");
 
-  window.Store = { selectSize, getState: () => ({ ...state, colourName: P.colours[state.colour].name }) };
+  function addToBag(label) {
+    selectSize(label);
+    setStatus("Added: " + P.title + ", " + P.colours[state.colour].name + ", size " + label + ".", "ok");
+  }
+
+  window.Store = { selectSize, addToBag, getState: () => ({ ...state, colourName: P.colours[state.colour].name }) };
   renderColours();
   renderSizes();
 })();

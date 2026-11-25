@@ -10,5 +10,5 @@ Static, no build step. Open `index.html` or serve the folder (e.g. GitHub Pages)
 ## Phases
 1. Product page
 2. Size advisor drawer, step 1 (measurements)
-3. Fit preference step + sizing engine (this commit)
-4. Result screen, size chart, polish
+3. Body-shape step, fit-preference step, sizing engine
+4. Result screen: size ring, per-measurement breakdown, size picker with YOU marker, Snug / Just right / Roomy gauges, cm/in size chart, add to bag / select on page / edit details. Answers are saved in `localStorage` on the device only. Radio groups support arrow keys, the drawer traps focus and closes on Esc, and the result is announced to screen readers.
