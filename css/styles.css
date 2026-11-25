@@ -14,6 +14,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .gallery__img{aspect-ratio:4/5;background:
   radial-gradient(ellipse at 50% 38%,#3a3a3a 0 28%,transparent 29%),
   linear-gradient(#ece9e4,#dedad3);transition:background-color .2s}
+.gallery__img{display:block;width:100%;height:auto;object-fit:cover;object-position:top}
 .info{padding:20px 16px 48px}
 .crumb{margin:0 0 6px;font-size:12px;color:var(--muted)}
 .title{margin:0;font:900 38px/1 var(--display);letter-spacing:-.02em;text-transform:uppercase}
