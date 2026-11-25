@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Loop Hoodie</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <main class="page">
+    <section class="gallery" aria-label="Product image">
+      <div class="gallery__img" role="img" aria-label="Loop Hoodie"></div>
+    </section>
+
+    <section class="info">
+      <p class="crumb" id="crumb"></p>
+      <h1 class="title" id="title"></h1>
+      <p class="price" id="price"></p>
+      <p class="desc" id="desc"></p>
+
+      <div class="field">
+        <p class="label">Colour <span class="label__value" id="colour-name"></span></p>
+        <div class="swatches" id="swatches" role="radiogroup" aria-label="Colour"></div>
+      </div>
+
+      <div class="field">
+        <p class="label">Size <span class="label__value" id="size-name">Select</span></p>
+        <div class="sizes" id="sizes" role="radiogroup" aria-label="Size"></div>
+        <button type="button" class="find-size" id="find-size">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 17 17 3l4 4L7 21H3z"/><path d="m13 7 2 2M10 10l2 2M7 13l2 2"/></svg>
+          <span>Find my size</span>
+        </button>
+      </div>
+
+      <button type="button" class="add" id="add">Add to bag</button>
+      <p class="status" id="status" role="status" aria-live="polite"></p>
+
+      <div class="details" id="details"></div>
+    </section>
+  </main>
+
+  <script src="data/product.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
