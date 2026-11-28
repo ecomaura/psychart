@@ -42,7 +42,39 @@ function psychart_updater_parse_release( $release ) {
 	);
 }
 
-/** Latest usable release, cached (12h on success, 1h when GitHub is unreachable or has nothing). */
+/**
+ * Fallback when the GitHub API is rate limited or blocked (common on shared hosting):
+ * github.com/<repo>/releases/latest redirects to the latest release tag, and the zip name is predictable.
+ */
+function psychart_updater_latest_via_redirect() {
+	$res = wp_remote_head( 'https://github.com/' . PSYCHART_GH_REPO . '/releases/latest', array(
+		'timeout'     => 8,
+		'redirection' => 0,
+		'headers'     => array( 'User-Agent' => 'psychart-theme-updater' ),
+	) );
+	if ( is_wp_error( $res ) ) {
+		return null;
+	}
+	$location = (string) wp_remote_retrieve_header( $res, 'location' );
+	if ( ! preg_match( '#/releases/tag/([^/?\#]+)$#', $location, $m ) ) {
+		return null;
+	}
+	$tag     = rawurldecode( $m[1] );
+	$version = ltrim( $tag, 'vV' );
+	$base    = 'https://github.com/' . PSYCHART_GH_REPO . '/releases';
+	return psychart_updater_parse_release( array(
+		'tag_name' => $tag,
+		'html_url' => $base . '/tag/' . rawurlencode( $tag ),
+		'assets'   => array(
+			array(
+				'name'                 => 'psychart-' . $version . '.zip',
+				'browser_download_url' => $base . '/download/' . rawurlencode( $tag ) . '/psychart-' . $version . '.zip',
+			),
+		),
+	) );
+}
+
+/** Latest usable release, cached (12h on success, 15 min when GitHub is unreachable or has nothing). */
 function psychart_updater_latest() {
 	$cached = get_site_transient( 'psychart_gh_release' );
 	if ( false !== $cached ) {
@@ -59,7 +91,10 @@ function psychart_updater_latest() {
 	if ( ! is_wp_error( $res ) && 200 === (int) wp_remote_retrieve_response_code( $res ) ) {
 		$release = psychart_updater_parse_release( json_decode( wp_remote_retrieve_body( $res ), true ) );
 	}
-	set_site_transient( 'psychart_gh_release', $release ? $release : '', $release ? 12 * HOUR_IN_SECONDS : HOUR_IN_SECONDS );
+	if ( ! $release ) {
+		$release = psychart_updater_latest_via_redirect();
+	}
+	set_site_transient( 'psychart_gh_release', $release ? $release : '', $release ? 12 * HOUR_IN_SECONDS : 15 * MINUTE_IN_SECONDS );
 	return $release;
 }
 

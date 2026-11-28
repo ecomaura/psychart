@@ -4,7 +4,7 @@
  */
 defined( 'ABSPATH' ) || exit;
 
-define( 'PSYCHART_VERSION', '1.1.1' );
+define( 'PSYCHART_VERSION', '1.1.2' );
 define( 'PSYCHART_DIR', get_template_directory() );
 define( 'PSYCHART_URI', get_template_directory_uri() );
 
