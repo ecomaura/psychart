@@ -27,7 +27,7 @@ img,svg{max-width:100%;height:auto;display:block}
 a{color:inherit}
 button,input{font:inherit;color:inherit;border-radius:0}
 button{cursor:pointer}
-ul{list-style:none;margin:0;padding:0}
+ul,ol{list-style:none;margin:0;padding:0}
 [hidden]{display:none!important}
 h1,h2,h3,h4,p{margin:0}
 :focus-visible{outline:2px solid var(--psy-ink);outline-offset:3px}
@@ -161,3 +161,62 @@ h1,h2,h3,h4,p{margin:0}
 }
 
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}}
+
+/* ===== Phase 2: Home ===== */
+.psy-home-top{display:block}
+.psy-hero{padding:var(--psy-pad) var(--psy-pad) 0}
+.psy-hero img{width:100%;height:auto;max-height:78vh;object-fit:cover;object-position:top center;background:var(--psy-card)}
+
+.psy-tagline{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px var(--psy-pad) 0}
+.psy-tagline__thumb{background:var(--psy-card);border:1px solid var(--psy-line);aspect-ratio:1/1.1;overflow:hidden}
+.psy-tagline__thumb img{width:100%;height:100%;object-fit:cover}
+.psy-tagline__card{background:var(--psy-card);border:1px solid var(--psy-line);padding:18px 16px;display:flex;flex-direction:column;justify-content:space-between;gap:16px}
+.psy-tagline__title{font-size:clamp(34px,9vw,52px)}
+.psy-tagline__note{font-size:9px;max-width:18ch}
+
+.psy-alter{padding:56px var(--psy-pad) 8px}
+.psy-alter__title{font-size:clamp(64px,19vw,120px);margin:14px 0 22px}
+.psy-alter__sub{font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:500;max-width:30ch;line-height:1.7;margin-bottom:16px}
+.psy-alter__body{color:#555;max-width:46ch;margin-bottom:28px}
+.psy-alter__btns{display:grid;gap:12px;grid-template-columns:minmax(0,280px);margin-bottom:36px}
+.psy-alter__btns .psy-btn{justify-content:space-between;min-width:200px}
+.psy-values{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--psy-line);background:#fff}
+.psy-values li{padding:20px 18px 22px;border-right:1px solid var(--psy-line);border-bottom:1px solid var(--psy-line)}
+.psy-values li:nth-child(2n){border-right:0}
+.psy-values li:nth-child(n+3){border-bottom:0}
+.psy-values__n{display:block;font-family:var(--psy-display);font-size:34px;line-height:1;margin-bottom:10px}
+
+.psy-uniform{padding:72px 0 24px}
+.psy-uniform__head{margin-bottom:36px}
+.psy-uniform__title{font-size:clamp(48px,13vw,92px);margin:12px 0 18px}
+.psy-uniform__copy{color:#555;max-width:44ch}
+.psy-stories{display:grid;gap:36px}
+.psy-story{background:#fff;border:1px solid var(--psy-line)}
+.psy-story__media{display:block;background:var(--psy-card);aspect-ratio:4/5;overflow:hidden}
+.psy-story__media img{width:100%;height:100%;object-fit:cover;object-position:top center;transition:transform .6s var(--psy-ease)}
+.psy-story__media:hover img{transform:scale(1.03)}
+.psy-story__body{padding:20px 18px 24px}
+.psy-story__title{font-size:34px;margin:8px 0 12px}
+.psy-story__title a{text-decoration:none}
+.psy-story__desc{color:#555;font-size:14px;max-width:40ch}
+
+.psy-manifesto{padding:72px 0 56px}
+.psy-manifesto__title{font-size:clamp(52px,15vw,110px);margin-top:12px}
+.psy-manifesto__list{margin-top:36px;border-top:1px solid var(--psy-line)}
+.psy-manifesto__list li{padding:22px 0;border-bottom:1px solid var(--psy-line)}
+.psy-manifesto__list h3{font-size:30px;margin-bottom:8px}
+.psy-manifesto__list p{color:#555;font-size:14px;max-width:46ch}
+
+@media (min-width:900px){
+  .psy-home-top{display:grid;grid-template-columns:1.05fr 1fr;align-items:start}
+  .psy-hero{position:sticky;top:var(--psy-header-h);padding:var(--psy-pad)}
+  .psy-hero img{max-height:calc(100vh - var(--psy-header-h) - 2*var(--psy-pad));width:100%}
+  .psy-tagline{padding:var(--psy-pad) var(--psy-pad) 0 0;grid-template-columns:200px 1fr}
+  .psy-alter{padding:72px var(--psy-pad) 40px 0;max-width:640px}
+  .psy-alter__btns{grid-template-columns:repeat(2,minmax(0,220px))}
+  .psy-uniform{padding-top:112px}
+  .psy-stories{grid-template-columns:repeat(3,1fr);gap:24px}
+  .psy-manifesto{padding:112px 0 96px}
+  .psy-manifesto__grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+  .psy-manifesto__list{margin-top:0}
+}
