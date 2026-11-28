@@ -1,4 +1,4 @@
-# PSYCHART.CO theme (v0.4.0 — Phases 0 to 4)
+# PSYCHART.CO theme (v0.5.0 — Phases 0 to 5)
 
 Classic PHP theme for WooCommerce. No build step.
 
@@ -51,3 +51,16 @@ Simple (non-variable) products also work: no colour/size pickers, just Add to ba
 - Colour change updates which sizes are in stock, the price (variation price) and the image (variation image).
 - `window.Store.addToBag()` (used by the advisor) and the Add to bag button post to the `psychart_add_to_cart` AJAX action. The server resolves the variation from colour + size, adds it to the real WooCommerce cart, then the bag drawer refreshes and opens.
 - Filters: `psychart_pdp_extra_images` (false = show only the main image), `psychart_colour_names` (colour name > hex map), `psychart_pdp_max_variations` (default 100).
+
+## Phase 5: Cart, checkout, account, content pages, 404
+**Set the Cart and Checkout pages to the classic shortcodes** (WooCommerce 8+ creates them as blocks): edit the Cart page and replace its content with `[woocommerce_cart]`, the Checkout page with `[woocommerce_checkout]`. My Account uses `[woocommerce_my_account]`. The theme styles the shortcode versions.
+
+- `page.php` wraps Cart, Checkout, My Account and any other page.
+- `woocommerce/cart/cart.php`, `cart/cart-empty.php`: bag-style cart (thumbnail, quantity, remove, discount code, totals, sticky on desktop). Cross-sells are removed.
+- Checkout, order-received and account dashboard/orders/addresses are styled with CSS only (no template overrides), so WooCommerce updates and payment gateways keep working.
+- `woocommerce/myaccount/form-login.php`: Sign in + Create account (the register panel shows only if registration is enabled in WooCommerce > Settings > Accounts & Privacy).
+- Content pages are slug-based templates: `page-about.php` (about), `page-faq.php` (faq), `page-shipping-returns.php` (shipping-returns), `page-contact.php` (contact). They are created automatically on activation if missing, matching the footer links.
+  - About text and the three stats: Customize > About page.
+  - FAQ and Shipping & Returns: the bundled copy is placeholder text. Writing anything in the page editor replaces it. FAQ defaults can also be changed with the `psychart_faq_items` filter.
+  - Contact: form posts to `admin-post.php`, nonce + honeypot + 1-per-minute limit per IP, sends with `wp_mail()` to Customize > About page > Contact form recipient (default: admin email). Hook `psychart_contact_sent` to log or forward. Use an SMTP plugin on hosts where `wp_mail()` is unreliable.
+- `404.php`: Shop / Home / Search.
