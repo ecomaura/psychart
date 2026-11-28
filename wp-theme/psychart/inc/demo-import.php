@@ -46,6 +46,18 @@ function psychart_demo_import_mapping() {
 }
 
 /**
+ * Variation rows have no catalog visibility (it belongs to the parent product) and the CSV
+ * leaves the cell blank, which WooCommerce rejects as "Invalid catalog visibility option".
+ * Drop the blank value for variation rows before the importer applies it.
+ */
+function psychart_demo_import_clean_row( $data ) {
+	if ( isset( $data['type'] ) && 'variation' === $data['type'] ) {
+		unset( $data['catalog_visibility'], $data['featured'] );
+	}
+	return $data;
+}
+
+/**
  * Run the import. Returns array( imported, variations, skipped, failed, errors[] ) or WP_Error.
  */
 function psychart_run_demo_import() {
@@ -75,7 +87,9 @@ function psychart_run_demo_import() {
 			'prevent_timeouts' => false,
 		)
 	);
+	add_filter( 'woocommerce_product_import_process_item_data', 'psychart_demo_import_clean_row' );
 	$data = $importer->import();
+	remove_filter( 'woocommerce_product_import_process_item_data', 'psychart_demo_import_clean_row' );
 
 	$errors = array();
 	foreach ( array( 'failed', 'skipped' ) as $bucket ) {
