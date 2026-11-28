@@ -1,0 +1,26 @@
+/* Phase 4 glue: what the product page needs to live inside the PSYCHART theme.
+   Nothing here restyles the ported page; it supplies fonts and the page/drawer base styles
+   that the static page got from <body>. */
+@font-face{font-family:"Archivo";src:url("../fonts/archivo-latin-wght-normal.woff2") format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
+@font-face{font-family:"Inter";src:url("../fonts/inter-latin-wght-normal.woff2") format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
+
+/* The static page set these on <body>; here they apply to the page and the advisor drawer only. */
+.psy-pdp{background:var(--bg);min-height:60vh}
+.psy-pdp,.adv{color:var(--ink);font:400 15px/1.5 var(--text)}
+.psy-pdp button,.adv button{font:inherit;color:inherit;cursor:pointer}
+
+/* Price markup from WooCommerce */
+.price del{color:var(--muted);margin-right:6px}
+.price ins{text-decoration:none}
+.price .screen-reader-text{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* Add to bag busy / sold out */
+.add:disabled{opacity:.55;cursor:progress}
+.add.is-soldout{background:var(--muted);cursor:not-allowed}
+
+/* Extra gallery images stack under the first one */
+.gallery .gallery__img + .gallery__img{margin-top:8px}
+
+/* WooCommerce notices on this page */
+.psy-pdp .woocommerce-message,.psy-pdp .woocommerce-info,.psy-pdp .woocommerce-error{list-style:none;margin:0 auto;max-width:1080px;padding:14px 24px;border-bottom:1px solid var(--line);font-size:14px}
+.psy-pdp .woocommerce-message a.button{float:right;text-decoration:underline}

@@ -1,0 +1,59 @@
+/* Ported from css/styles.css. Rules below the token block are unchanged.
+   Only the first block differs: tokens are scoped to the product page (body.single-product)
+   and the global resets (*, html, body, button, :focus-visible) are dropped, because the theme provides them. */
+body.single-product{
+  --bg:#fff; --ink:#111; --muted:#6b6b6b; --line:#e4e4e4; --soft:#f3f1ee;
+  --ok:#1f6b45; --err:#a32a2a; --radius:6px;
+  --display:"Archivo","Arial Black",Impact,sans-serif;
+  --text:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+
+.page{max-width:1080px;margin:0 auto}
+.gallery__img{aspect-ratio:4/5;background:
+  radial-gradient(ellipse at 50% 38%,#3a3a3a 0 28%,transparent 29%),
+  linear-gradient(#ece9e4,#dedad3);transition:background-color .2s}
+.gallery__img{display:block;width:100%;height:auto;object-fit:cover;object-position:top}
+.info{padding:20px 16px 48px}
+.crumb{margin:0 0 6px;font-size:12px;color:var(--muted)}
+.title{margin:0;font:900 38px/1 var(--display);letter-spacing:-.02em;text-transform:uppercase}
+.price{margin:10px 0 14px;font-weight:500}
+.desc{margin:0 0 22px;color:#333;max-width:52ch}
+
+.field{margin-bottom:20px}
+.label{margin:0 0 10px;font-weight:600}
+.label__value{margin-left:6px;font-weight:400;color:var(--muted)}
+
+.swatches{display:flex;gap:12px}
+.swatch{width:32px;height:32px;border-radius:50%;border:1px solid var(--line);padding:0;background:var(--c);
+  box-shadow:0 0 0 0 var(--bg),0 0 0 0 var(--ink);transition:box-shadow .15s}
+.swatch[aria-checked="true"]{box-shadow:0 0 0 3px var(--bg),0 0 0 4.5px var(--ink)}
+
+.sizes{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.size{height:44px;border:1px solid var(--line);border-radius:var(--radius);background:var(--bg);font-weight:500;transition:border-color .15s}
+.size:hover:not(:disabled){border-color:var(--ink)}
+.size[aria-checked="true"]{border:2px solid var(--ink)}
+.size:disabled{color:#bbb;text-decoration:line-through;cursor:not-allowed}
+.sizes.is-error .size{border-color:var(--err)}
+
+.find-size{display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:0;border:0;background:none;font-size:13px}
+.find-size span{text-decoration:underline;text-underline-offset:3px}
+
+.add{width:100%;height:52px;border:0;border-radius:var(--radius);background:var(--ink);color:#fff;font-weight:600;transition:transform .1s,opacity .15s}
+.add:hover{opacity:.9}.add:active{transform:scale(.99)}
+.status{min-height:1.5em;margin:8px 0 18px;font-size:13px}
+.status.is-ok{color:var(--ok)}.status.is-err{color:var(--err)}
+
+.details{border-top:1px solid var(--line)}
+.details details{border-bottom:1px solid var(--line)}
+.details summary{list-style:none;display:flex;align-items:center;gap:10px;padding:16px 0;font-weight:600;cursor:pointer}
+.details summary::-webkit-details-marker{display:none}
+.details summary::before{content:"";width:7px;height:7px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(-45deg);transition:transform .2s}
+.details details[open] summary::before{transform:rotate(45deg)}
+.details p{margin:0 0 16px;color:#333;max-width:60ch}
+
+@media (min-width:820px){
+  .page{display:grid;grid-template-columns:1.1fr 1fr;gap:56px;padding:40px 24px;align-items:start}
+  .info{padding:0}
+  .title{font-size:52px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
