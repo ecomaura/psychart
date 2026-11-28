@@ -3,11 +3,13 @@ Theme Name: PSYCHART.CO
 Theme URI: https://psychart.co
 Author: PSYCHART.CO
 Description: Minimal editorial streetwear theme for WooCommerce. Classic PHP theme, self-hosted fonts, no build step.
-Version: 1.1.3
+Version: 1.1.4
 Requires at least: 6.4
 Requires PHP: 7.4
 WC requires at least: 8.0
 License: GNU General Public License v2 or later
 Text Domain: psychart
+GitHub Theme URI: ecomaura/psychart
+Release Asset: true
 */
 /* All styles live in assets/css/main.css (enqueued by functions.php). */

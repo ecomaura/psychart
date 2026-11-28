@@ -29,3 +29,11 @@ Install release **1.0.0** by uploading the `psychart-1.0.0.zip` attached to the 
 - Turn it off on a site with `add_filter( 'psychart_updater_enabled', '__return_false' );`.
 - Change the repo with `define( 'PSYCHART_GH_REPO', 'owner/repo' );` in wp-config.php.
 - Back up (or use a staging site) before updating a live store, as with any theme update.
+
+## Optional: Git Updater plugin
+`style.css` also carries the headers Git Updater reads (`GitHub Theme URI`, `Release Asset: true`), so the
+Git Updater plugin can manage updates instead of (or alongside) the built-in updater. Git Updater is not in the
+WordPress.org directory: download it from https://github.com/afragen/git-updater/releases (Plugins > Add New > Upload Plugin).
+Do NOT add a `GitHub Branch` header: a branch other than master makes Git Updater ignore tags.
+Release assets must be named `<repo>-<tag>.zip` (here `psychart-<version>.zip`), which release.yml already does.
+To use only Git Updater: `add_filter( 'psychart_updater_enabled', '__return_false' );`
