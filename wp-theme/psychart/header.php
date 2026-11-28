@@ -20,12 +20,16 @@
 			if ( has_custom_logo() ) {
 				echo wp_get_attachment_image( get_theme_mod( 'custom_logo' ), 'full', false, array( 'class' => 'psy-wordmark__img' ) );
 			} else {
-				echo 'PSYCHART.CO';
+				echo psychart_brandmark(); // phpcs:ignore WordPress.Security.EscapeOutput
+				echo '<span class="psy-wordmark__text">PSYCHART.CO</span>';
 			}
 			?>
 		</a>
 
 		<div class="psy-header__actions">
+			<button type="button" class="psy-iconbtn psy-theme-toggle" data-psy-theme-toggle aria-pressed="false" aria-label="<?php esc_attr_e( 'Dark theme', 'psychart' ); ?>" title="<?php esc_attr_e( 'Switch theme', 'psychart' ); ?>">
+				<?php echo psychart_icon( 'sun' ) . psychart_icon( 'moon' ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
+			</button>
 			<button type="button" class="psy-iconbtn" data-psy-open="search" aria-label="<?php esc_attr_e( 'Search', 'psychart' ); ?>" aria-controls="psy-search" aria-expanded="false">
 				<?php echo psychart_icon( 'search' ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
 			</button>

@@ -21,6 +21,8 @@ add_action( 'wp_enqueue_scripts', function () {
 			'typeMore'  => __( 'Start typing to search products', 'psychart' ),
 			'error'     => __( 'Something went wrong. Please try again.', 'psychart' ),
 			'joined'    => __( 'You are on the list.', 'psychart' ),
+			'darkOn'    => __( 'Switch to light theme', 'psychart' ),
+			'darkOff'   => __( 'Switch to dark theme', 'psychart' ),
 		),
 	) );
 } );
@@ -35,3 +37,24 @@ add_filter( 'woocommerce_enqueue_styles', function ( $styles ) {
 add_action( 'wp_enqueue_scripts', function () {
 	wp_dequeue_script( 'wc-cart-fragments' );
 }, 100 );
+
+/**
+ * Apply the saved (or system) theme before first paint so there is no light flash.
+ * Stored in localStorage under "psychart-theme" ("light" | "dark"); no value means follow the system.
+ */
+add_action( 'wp_head', function () {
+	?>
+<meta name="theme-color" content="#fafafa">
+<script>(function(){try{var t=localStorage.getItem('psychart-theme');if(t!=='light'&&t!=='dark'){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);var m=document.querySelector('meta[name=theme-color]');if(m)m.setAttribute('content',t==='dark'?'#0e0e0e':'#fafafa');}catch(e){}})();</script>
+	<?php
+}, 0 );
+
+/** Favicon / touch icon from the brand emblem, unless a Site Icon is set in the Customizer. */
+add_action( 'wp_head', function () {
+	if ( has_site_icon() ) {
+		return;
+	}
+	$base = PSYCHART_URI . '/assets/img/brand/';
+	printf( '<link rel="icon" type="image/png" sizes="32x32" href="%s">' . "\n", esc_url( $base . 'icon-32.png' ) );
+	printf( '<link rel="apple-touch-icon" sizes="180x180" href="%s">' . "\n", esc_url( $base . 'icon-180.png' ) );
+}, 2 );

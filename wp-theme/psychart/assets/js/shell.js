@@ -67,6 +67,43 @@
     }
   });
 
+  /* ---------- theme toggle ---------- */
+  var root = document.documentElement;
+  var themeBtns = $$('[data-psy-theme-toggle]');
+  var KEY = 'psychart-theme';
+  function currentTheme() { return root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'; }
+  function paintTheme() {
+    var dark = currentTheme() === 'dark';
+    var i18n = C.i18n || {};
+    themeBtns.forEach(function (b) {
+      b.setAttribute('aria-pressed', dark ? 'true' : 'false');
+      b.setAttribute('aria-label', dark ? (i18n.darkOn || 'Switch to light theme') : (i18n.darkOff || 'Switch to dark theme'));
+    });
+    var m = $('meta[name=theme-color]');
+    if (m) m.setAttribute('content', dark ? '#0e0e0e' : '#fafafa');
+  }
+  function setTheme(t, save) {
+    root.classList.add('psy-theme-anim');
+    root.setAttribute('data-theme', t);
+    if (save) { try { localStorage.setItem(KEY, t); } catch (err) {} }
+    paintTheme();
+    setTimeout(function () { root.classList.remove('psy-theme-anim'); }, 350);
+  }
+  themeBtns.forEach(function (b) {
+    b.addEventListener('click', function () { setTheme(currentTheme() === 'dark' ? 'light' : 'dark', true); });
+  });
+  paintTheme();
+  // Follow the system setting until the visitor picks a theme themselves.
+  if (window.matchMedia) {
+    var mq = window.matchMedia('(prefers-color-scheme: dark)');
+    var onSys = function (e) {
+      var saved = null;
+      try { saved = localStorage.getItem(KEY); } catch (err) {}
+      if (saved !== 'light' && saved !== 'dark') setTheme(e.matches ? 'dark' : 'light', false);
+    };
+    if (mq.addEventListener) mq.addEventListener('change', onSys); else if (mq.addListener) mq.addListener(onSys);
+  }
+
   /* ---------- bag ---------- */
   var bagInner = $('.psy-bag-inner');
   function post(action, data) {

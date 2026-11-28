@@ -24,3 +24,10 @@
 /* WooCommerce notices on this page */
 .psy-pdp .woocommerce-message,.psy-pdp .woocommerce-info,.psy-pdp .woocommerce-error{list-style:none;margin:0 auto;max-width:1080px;padding:14px 24px;border-bottom:1px solid var(--line);font-size:14px}
 .psy-pdp .woocommerce-message a.button{float:right;text-decoration:underline}
+
+/* Dark theme for the product page and size advisor (tokens only; rules above use var()). */
+html[data-theme="dark"] body.single-product{
+  --bg:#0e0e0e; --ink:#f2f2f2; --muted:#9a9a9a; --line:#2c2c2c; --soft:#1a1a1a;
+  --on-ink:#0e0e0e; --text-2:#cfcfcf; --faint:#5f5f5f; --ok:#4cc38a; --err:#ff6b6b;
+}
+html[data-theme="dark"] .gallery__img{filter:brightness(.92)}
