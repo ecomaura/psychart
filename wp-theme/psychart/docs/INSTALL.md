@@ -15,7 +15,7 @@ WooCommerce creates these pages with blocks. The theme styles the classic versio
 - Pages > My Account: content should be `[woocommerce_my_account]`
 
 ## 3. Demo content (optional)
-1. Products > All Products > Import > choose `demo/demo-products.csv` > Continue > Run the importer.
+1. One click: Appearance > Import Demo Products > Import demo products. (Manual alternative: Products > All Products > Import > choose `demo/demo-products.csv` > Continue > Run the importer.)
    It creates 3 variable products (Dual-tone Denim Jacket, Editorial Set, Washed Flare Denim) with Colour and Size variations, size charts and demo images (downloaded from the GitHub repo, so the server needs internet).
    One variation (Washed Black, XL) is out of stock on purpose, to show the sold-out state.
 2. Appearance > Customize > Home page > The New Uniform: pick each product for the three cards.
