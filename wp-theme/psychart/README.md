@@ -71,3 +71,6 @@ Simple (non-variable) products also work: no colour/size pickers, just Add to ba
 - `inc/performance.php`: drops emoji, oEmbed discovery and (on home, shop, product and 404) block-editor CSS.
 - Fixes: bag quantity increases now respect stock; live-search output escapes quotes; skip link focuses `<main>`; header and drawers clear the admin bar; larger bag +/- targets; tablet and print polish.
 - `screenshot.png` for Appearance > Themes.
+
+## Updates from GitHub
+`inc/updater.php` offers new GitHub Releases in WordPress. See `docs/UPDATES.md` for how to publish one (bump version in style.css and functions.php, push a tag).

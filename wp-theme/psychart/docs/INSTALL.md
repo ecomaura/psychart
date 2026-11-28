@@ -3,7 +3,7 @@
 Requirements: WordPress 6.4+, PHP 7.4+, WooCommerce 8.0+. No build step.
 
 ## 1. Install
-1. WP Admin > Appearance > Themes > Add New > Upload Theme > `psychart-theme-1.0.0.zip` > Activate.
+1. WP Admin > Appearance > Themes > Add New > Upload Theme > `psychart-1.0.0.zip` > Activate.
    On activation the About, FAQ, Shipping & Returns and Contact pages are created if missing.
 2. Install and activate WooCommerce and run its setup wizard (it creates Shop, Cart, Checkout, My Account).
 3. Settings > Permalinks: choose "Post name" and Save (the footer links use /faq/, /about/ and so on).
@@ -35,3 +35,6 @@ Products without a size chart hide the "Find my size" link.
 
 ## Full-page caching
 Cart, bag, search and add-to-bag use admin-ajax and carry no nonce for cart actions (same as WooCommerce core), so they work behind page caches. Exclude /cart/, /checkout/ and /my-account/ from caching as WooCommerce advises.
+
+## Updates
+After this first install, updates come from GitHub inside WordPress. See `docs/UPDATES.md`.

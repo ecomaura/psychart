@@ -19,3 +19,4 @@ require_once PSYCHART_DIR . '/inc/shop.php';
 require_once PSYCHART_DIR . '/inc/product.php';
 require_once PSYCHART_DIR . '/inc/pages.php';
 require_once PSYCHART_DIR . '/inc/performance.php';
+require_once PSYCHART_DIR . '/inc/updater.php';

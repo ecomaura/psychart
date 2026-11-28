@@ -1,0 +1,40 @@
+name: Release theme
+
+# Push a version tag (e.g. 1.0.1) to publish a release. WordPress sites running the
+# theme will then offer the update (see wp-theme/psychart/inc/updater.php).
+on:
+  push:
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check the tag matches the theme version
+        run: |
+          TAG="${GITHUB_REF_NAME#v}"
+          CSS=$(grep -m1 '^Version:' wp-theme/psychart/style.css | sed 's/Version:[[:space:]]*//' | tr -d '\r')
+          PHP=$(grep -m1 "define( 'PSYCHART_VERSION'" wp-theme/psychart/functions.php | sed "s/.*'\([^']*\)' );.*/\1/")
+          echo "tag=$TAG style.css=$CSS functions.php=$PHP"
+          [ "$TAG" = "$CSS" ] && [ "$TAG" = "$PHP" ] || { echo "::error::Tag, style.css Version and PSYCHART_VERSION must all match"; exit 1; }
+
+      - name: Build zip (top-level folder must be psychart)
+        run: |
+          TAG="${GITHUB_REF_NAME#v}"
+          cd wp-theme
+          zip -qr "../psychart-${TAG}.zip" psychart -x '*.DS_Store'
+          cd ..
+          unzip -l "psychart-${TAG}.zip" | grep -q ' psychart/style.css' || { echo "::error::style.css missing from zip"; exit 1; }
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="${GITHUB_REF_NAME#v}"
+          gh release create "$GITHUB_REF_NAME" "psychart-${TAG}.zip" --title "PSYCHART.CO ${TAG}" --generate-notes
