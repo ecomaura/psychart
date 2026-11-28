@@ -220,3 +220,71 @@ h1,h2,h3,h4,p{margin:0}
   .psy-manifesto__grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
   .psy-manifesto__list{margin-top:0}
 }
+
+/* ===== Phase 3: Shop, cards, filters ===== */
+.psy-shop{padding:40px 0 88px}
+.psy-shop__title{font-size:clamp(56px,14vw,112px)}
+.psy-shop__sub{margin-top:10px;color:var(--psy-mute);max-width:56ch}
+.psy-shop__head{margin-bottom:28px}
+.psy-shop .woocommerce-message,.psy-shop .woocommerce-info,.psy-shop .woocommerce-error{list-style:none;margin:0 0 20px;padding:14px 18px;border:1px solid var(--psy-line);background:#fff;font-size:14px}
+.psy-shop .woocommerce-message a.button{float:right;text-decoration:underline}
+
+.psy-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0;border-top:1px solid var(--psy-line);border-bottom:1px solid var(--psy-line);margin-bottom:20px}
+.psy-filterbtn{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0;background:none;border:0;font-size:12px;letter-spacing:.14em;font-weight:500}
+.psy-filterbtn .psy-icon{width:18px;height:18px}
+.psy-filterbtn__n{display:inline-grid;place-items:center;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--psy-ink);color:#fff;font-size:10px;letter-spacing:0}
+.psy-sort{display:flex;align-items:center;gap:12px}
+.psy-select{position:relative;display:inline-block}
+.psy-select::after{content:"";position:absolute;right:12px;top:50%;width:7px;height:7px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:translateY(-70%) rotate(45deg);pointer-events:none}
+.psy-select select{-webkit-appearance:none;appearance:none;height:44px;min-width:150px;padding:0 34px 0 14px;border:1px solid var(--psy-line);background:#fff;font-size:13px}
+.psy-select select:focus{border-color:var(--psy-ink);outline:0}
+.psy-shop__count{margin-bottom:18px}
+
+.psy-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 12px}
+.psy-card__media{position:relative;display:block;aspect-ratio:4/5;overflow:hidden;background:var(--psy-card)}
+.psy-card__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .35s var(--psy-ease),transform .6s var(--psy-ease)}
+.psy-card__img--alt{opacity:0}
+@media (hover:hover){
+  .psy-card__media:hover .psy-card__img--alt{opacity:1}
+  .psy-card__media:hover .psy-card__img:not(.psy-card__img--alt){transform:scale(1.02)}
+}
+.psy-badge{position:absolute;top:10px;left:10px;padding:5px 9px;background:#fff;border:1px solid var(--psy-line);font-size:9px;letter-spacing:.2em;text-transform:uppercase;font-weight:500}
+.psy-badge--dark{background:var(--psy-ink);border-color:var(--psy-ink);color:#fff}
+.psy-card__body{padding-top:12px}
+.psy-card__title{font-size:22px;line-height:1}
+.psy-card__title a{text-decoration:none}
+.psy-card__price{margin-top:6px;font-size:13px;color:#555}
+.psy-card__price del{color:var(--psy-mute);margin-right:6px}
+.psy-card__price ins{text-decoration:none;color:var(--psy-ink);font-weight:500}
+
+.psy-empty{display:flex;flex-direction:column;align-items:center;gap:14px;padding:72px 24px;border:1px solid var(--psy-line);background:#fff;color:var(--psy-mute);text-align:center}
+.psy-empty .psy-icon{width:34px;height:34px;stroke-width:1;opacity:.6}
+.psy-empty .psy-link-underline{color:var(--psy-ink)}
+
+.psy-pagination{margin-top:56px}
+.psy-pagination ul{display:flex;justify-content:center;flex-wrap:wrap;gap:6px}
+.psy-pagination a,.psy-pagination span{display:grid;place-items:center;min-width:44px;height:44px;padding:0 14px;border:1px solid var(--psy-line);background:#fff;font-size:12px;letter-spacing:.14em;text-decoration:none;text-transform:uppercase}
+.psy-pagination a:hover{border-color:var(--psy-ink)}
+.psy-pagination .current{background:var(--psy-ink);border-color:var(--psy-ink);color:#fff}
+.psy-pagination .dots{border-color:transparent;background:none}
+
+/* Filters drawer */
+.psy-filters{padding:6px var(--psy-pad) 24px;display:block}
+.psy-filter{padding:22px 0;border-bottom:1px solid var(--psy-line)}
+.psy-filter:last-child{border-bottom:0}
+.psy-filter__list{margin-top:10px}
+.psy-filter__list a{display:flex;justify-content:space-between;padding:10px 0;font-size:14px;color:#555;text-decoration:none}
+.psy-filter__list a:hover{color:var(--psy-ink)}
+.psy-filter__list a.is-active{color:var(--psy-ink);font-weight:700}
+.psy-filter__count{color:var(--psy-mute);font-weight:400;font-size:12px}
+.psy-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.psy-chip{display:inline-grid;place-items:center;min-width:44px;min-height:40px;padding:0 14px;border:1px solid var(--psy-line);background:#fff;font-size:12px;letter-spacing:.1em;text-transform:uppercase;text-decoration:none}
+.psy-chip:hover{border-color:var(--psy-ink)}
+.psy-chip.is-active{background:var(--psy-ink);border-color:var(--psy-ink);color:#fff}
+.psy-price{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin-top:12px}
+.psy-price .psy-btn{grid-column:1/-1;min-height:44px}
+.psy-filters__foot{flex:none;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px var(--psy-pad) calc(14px + env(safe-area-inset-bottom));border-top:1px solid var(--psy-line);background:var(--psy-bg)}
+.psy-filters__foot .psy-btn{flex:1}
+
+@media (min-width:700px){.psy-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:40px 20px}}
+@media (min-width:1100px){.psy-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.psy-shop{padding-top:64px}}

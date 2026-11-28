@@ -5,7 +5,7 @@
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
 
-  var panels = { menu: $('#psy-menu'), search: $('#psy-search'), bag: $('#psy-bag') };
+  var panels = { menu: $('#psy-menu'), search: $('#psy-search'), bag: $('#psy-bag'), filters: $('#psy-filters') };
   var scrim = $('.psy-scrim');
   var current = null, lastFocus = null;
 
@@ -59,7 +59,7 @@
     if (!current) return;
     if (e.key === 'Escape') { close(); return; }
     if (e.key === 'Tab') { // focus trap
-      var f = $$('a[href],button:not([disabled]),input', panels[current]).filter(function (n) { return n.offsetParent !== null; });
+      var f = $$('a[href],button:not([disabled]),input,select', panels[current]).filter(function (n) { return n.offsetParent !== null; });
       if (!f.length) return;
       var first = f[0], last = f[f.length - 1];
       if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
@@ -143,6 +143,22 @@
         .catch(function () { setStatus(C.i18n.error); });
     }, 220);
   });
+
+  /* ---------- shop: sort + filters ---------- */
+  var sort = $('[data-psy-sort]');
+  if (sort) sort.addEventListener('change', function () { sort.form.submit(); });
+
+  if (panels.filters) {
+    // Filter options are links; reopen the drawer after the page reloads so several can be picked in a row.
+    panels.filters.addEventListener('click', function (e) {
+      if (e.target.closest('a[href].psy-chip, .psy-filter__list a, form button[type=submit]')) {
+        try { sessionStorage.setItem('psyFilters', '1'); } catch (err) {}
+      }
+    });
+    try {
+      if (sessionStorage.getItem('psyFilters')) { sessionStorage.removeItem('psyFilters'); open('filters'); }
+    } catch (err) {}
+  }
 
   /* ---------- newsletter ---------- */
   $$('[data-psy-news]').forEach(function (form) {

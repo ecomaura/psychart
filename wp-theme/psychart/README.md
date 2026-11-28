@@ -1,4 +1,4 @@
-# PSYCHART.CO theme (v0.2.0 — Phases 0 to 2)
+# PSYCHART.CO theme (v0.3.0 — Phases 0 to 3)
 
 Classic PHP theme for WooCommerce. No build step.
 
@@ -24,3 +24,11 @@ Classic PHP theme for WooCommerce. No build step.
 - Edit everything in Appearance > Customize > Home page (Hero, Alter ego intro, The New Uniform, Manifesto). Footer tagline is under Site Identity.
 - Story cards link to a WooCommerce product chosen in the Customizer (empty = Shop). Their image defaults to the product's image, or the bundled demo image if no product is set.
 - Demo images in `assets/img/demo/` are low-resolution frames from the design video. Replace them via the Customizer image fields before launch.
+
+## Phase 3: Shop, search results, filters
+- `woocommerce/archive-product.php` renders Shop, category/tag archives and product search results (`?s=...&post_type=product`).
+- Sort (Newest, Price: Low to High, Price: High to Low, Name: A to Z) uses WooCommerce's own ordering.
+- Filters drawer: categories (links), Size/Colour (uses product attributes named `size`, `colour` or `color`), price range, in-stock only. Works without JavaScript; the drawer reopens after each choice.
+- `woocommerce/content-product.php` is the product card (4:5 image, second gallery image on hover, Sold out / Sale badge).
+- Grid: 2 columns on phones, 3 on tablets, 4 on desktop; 12 products per page (`loop_shop_per_page`).
+- Add more filterable attributes with the `psychart_filter_attributes` filter.

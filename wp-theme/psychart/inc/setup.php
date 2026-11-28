@@ -16,7 +16,10 @@ add_action( 'after_setup_theme', function () {
 	) );
 
 	// WooCommerce. Gallery lightbox/zoom/slider are off: the product page (Phase 4) ships its own.
-	add_theme_support( 'woocommerce' );
+	add_theme_support( 'woocommerce', array(
+		'thumbnail_image_width' => 640,
+		'single_image_width'    => 1000,
+	) );
 
 	register_nav_menus( array(
 		'primary'        => __( 'Menu drawer', 'psychart' ),
@@ -90,6 +93,8 @@ function psychart_icon( $name ) {
 		'bag'    => '<path d="M5 8h14l-1 12H6L5 8Z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/>',
 		'close'  => '<path d="M6 6l12 12M18 6 6 18"/>',
 		'arrow'  => '<path d="M5 12h14M13 6l6 6-6 6"/>',
+		'filter' => '<path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/>',
+		'box'    => '<path d="M12 3 4 7v10l8 4 8-4V7l-8-4Z"/><path d="M4 7l8 4 8-4M12 11v10"/>',
 		'arrow-ne' => '<path d="M7 17 17 7M8 7h9v9"/>',
 		'plus'   => '<path d="M12 5v14M5 12h14"/>',
 		'minus'  => '<path d="M5 12h14"/>',
