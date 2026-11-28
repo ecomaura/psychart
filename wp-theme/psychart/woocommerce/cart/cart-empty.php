@@ -16,3 +16,4 @@ do_action( 'woocommerce_cart_is_empty' );
 		<a class="psy-btn psy-btn--solid" href="<?php echo esc_url( apply_filters( 'woocommerce_return_to_shop_redirect', wc_get_page_permalink( 'shop' ) ) ); ?>"><?php esc_html_e( 'Continue shopping', 'psychart' ); ?> <?php echo psychart_icon( 'arrow' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></a>
 	<?php endif; ?>
 </div>
+<?php psychart_product_picks( 3, __( 'Latest pieces', 'psychart' ) ); ?>

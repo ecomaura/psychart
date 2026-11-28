@@ -13,6 +13,7 @@ get_header();
 			<a class="psy-btn" href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'Home', 'psychart' ); ?></a>
 			<button type="button" class="psy-btn" data-psy-open="search"><?php esc_html_e( 'Search', 'psychart' ); ?></button>
 		</p>
+		<?php psychart_product_picks( 3, __( 'Latest pieces', 'psychart' ) ); ?>
 	</div>
 </div>
 <?php get_footer(); ?>

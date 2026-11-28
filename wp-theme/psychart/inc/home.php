@@ -120,7 +120,7 @@ function psychart_home_link( $key, $fallback ) {
 
 /** One "New Uniform" story card. Links to the chosen WooCommerce product, else to the shop. */
 function psychart_story_card( $i, $demo ) {
-	$pid     = absint( psychart_mod( "story_{$i}_product" ) );
+	$pid     = psychart_story_product_id( $i );
 	$product = ( $pid && function_exists( 'wc_get_product' ) ) ? wc_get_product( $pid ) : null;
 	$url     = $product ? $product->get_permalink() : psychart_shop_url();
 	$title   = psychart_mod( "story_{$i}_title" );

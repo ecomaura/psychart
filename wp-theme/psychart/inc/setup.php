@@ -38,15 +38,20 @@ function psychart_default_links( $location ) {
 	$acct = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'myaccount' ) : home_url( '/my-account/' );
 
 	$defaults = array(
-		'primary'        => array(
-			__( 'Shop All', 'psychart' ) => $shop,
-			__( 'Sign In', 'psychart' )  => $acct,
-			__( 'Search', 'psychart' )   => 'search',
+		'primary'        => array_merge(
+			array( __( 'Shop All', 'psychart' ) => $shop ),
+			function_exists( 'psychart_category_links' ) ? psychart_category_links() : array(),
+			array(
+				__( 'Sign In', 'psychart' ) => $acct,
+				__( 'Search', 'psychart' )  => 'search',
+			)
 		),
-		'footer_shop'    => array(
-			__( 'All Products', 'psychart' ) => $shop,
-			__( 'New Arrivals', 'psychart' ) => add_query_arg( 'orderby', 'date', $shop ),
-			__( 'Collections', 'psychart' )  => $shop,
+		'footer_shop'    => array_merge(
+			array(
+				__( 'All Products', 'psychart' ) => $shop,
+				__( 'New Arrivals', 'psychart' ) => add_query_arg( 'orderby', 'date', $shop ),
+			),
+			function_exists( 'psychart_category_links' ) ? psychart_category_links() : array( __( 'Collections', 'psychart' ) => $shop )
 		),
 		'footer_help'    => array(
 			__( 'FAQ', 'psychart' )                 => home_url( '/faq/' ),
