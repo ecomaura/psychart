@@ -4,7 +4,7 @@
  */
 defined( 'ABSPATH' ) || exit;
 
-define( 'PSYCHART_VERSION', '0.5.0' );
+define( 'PSYCHART_VERSION', '1.0.0' );
 define( 'PSYCHART_DIR', get_template_directory() );
 define( 'PSYCHART_URI', get_template_directory_uri() );
 
@@ -18,3 +18,4 @@ require_once PSYCHART_DIR . '/inc/customizer.php';
 require_once PSYCHART_DIR . '/inc/shop.php';
 require_once PSYCHART_DIR . '/inc/product.php';
 require_once PSYCHART_DIR . '/inc/pages.php';
+require_once PSYCHART_DIR . '/inc/performance.php';

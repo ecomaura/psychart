@@ -1,0 +1,30 @@
+ID,Type,SKU,Name,Published,Is featured?,Visibility in catalog,Short description,Description,Tax status,In stock?,Stock,Regular price,Categories,Images,Parent,Attribute 1 name,Attribute 1 value(s),Attribute 1 visible,Attribute 1 global,Attribute 2 name,Attribute 2 value(s),Attribute 2 visible,Attribute 2 global,Meta: _psychart_chart_unit,Meta: _psychart_chart_rows,Meta: _psychart_materials,Meta: _psychart_fit
+,variable,PSY-DTJ,Dual-tone Denim Jacket,1,0,visible,"Sharp panel contrast, utility pockets, and a clean front-zip silhouette.","A dual-tone denim jacket with contrast panels, utility pockets and a clean front zip.",taxable,1,,,Outerwear,https://raw.githubusercontent.com/ecomaura/psychart/main/wp-theme/psychart/assets/img/demo/jacket.jpg,,Colour,"Indigo, Washed Black",1,0,Size,"S, M, L, XL",1,0,in,"S, 42, 40, 40, 26
+M, 44, 42, 42, 27
+L, 46, 44, 44, 28
+XL, 48, 46, 46, 29","100% cotton denim. Wash cold, inside out. Hang dry.","Boxy, true to size. Size down for a closer fit."
+,variation,PSY-DTJ-IND-S,"Dual-tone Denim Jacket - Indigo, S",1,,,,,taxable,1,20,140,,,PSY-DTJ,Colour,Indigo,,0,Size,S,,0,,,,
+,variation,PSY-DTJ-IND-M,"Dual-tone Denim Jacket - Indigo, M",1,,,,,taxable,1,20,140,,,PSY-DTJ,Colour,Indigo,,0,Size,M,,0,,,,
+,variation,PSY-DTJ-IND-L,"Dual-tone Denim Jacket - Indigo, L",1,,,,,taxable,1,20,140,,,PSY-DTJ,Colour,Indigo,,0,Size,L,,0,,,,
+,variation,PSY-DTJ-IND-XL,"Dual-tone Denim Jacket - Indigo, XL",1,,,,,taxable,1,20,140,,,PSY-DTJ,Colour,Indigo,,0,Size,XL,,0,,,,
+,variation,PSY-DTJ-WAS-S,"Dual-tone Denim Jacket - Washed Black, S",1,,,,,taxable,1,20,140,,,PSY-DTJ,Colour,Washed Black,,0,Size,S,,0,,,,
+,variation,PSY-DTJ-WAS-M,"Dual-tone Denim Jacket - Washed Black, M",1,,,,,taxable,1,20,140,,,PSY-DTJ,Colour,Washed Black,,0,Size,M,,0,,,,
+,variation,PSY-DTJ-WAS-L,"Dual-tone Denim Jacket - Washed Black, L",1,,,,,taxable,1,20,140,,,PSY-DTJ,Colour,Washed Black,,0,Size,L,,0,,,,
+,variation,PSY-DTJ-WAS-XL,"Dual-tone Denim Jacket - Washed Black, XL",1,,,,,taxable,0,0,140,,,PSY-DTJ,Colour,Washed Black,,0,Size,XL,,0,,,,
+,variable,PSY-EDS,Editorial Set,1,0,visible,"A full look built around contrast, clean lines, and a minimal editorial mood.",A two-piece set built around contrast and clean lines.,taxable,1,,,Sets,https://raw.githubusercontent.com/ecomaura/psychart/main/wp-theme/psychart/assets/img/demo/hero.jpg,,Colour,"Black, Bone",1,0,Size,"S, M, L, XL",1,0,in,"S, 41, 39, 39, 25.5
+M, 43, 41, 41, 26.5
+L, 45, 43, 43, 27.5
+XL, 47, 45, 45, 28.5","Cotton blend. Wash cold, hang dry.","Relaxed, true to size."
+,variation,PSY-EDS-BLA-S,"Editorial Set - Black, S",1,,,,,taxable,1,20,180,,,PSY-EDS,Colour,Black,,0,Size,S,,0,,,,
+,variation,PSY-EDS-BLA-M,"Editorial Set - Black, M",1,,,,,taxable,1,20,180,,,PSY-EDS,Colour,Black,,0,Size,M,,0,,,,
+,variation,PSY-EDS-BLA-L,"Editorial Set - Black, L",1,,,,,taxable,1,20,180,,,PSY-EDS,Colour,Black,,0,Size,L,,0,,,,
+,variation,PSY-EDS-BLA-XL,"Editorial Set - Black, XL",1,,,,,taxable,1,20,180,,,PSY-EDS,Colour,Black,,0,Size,XL,,0,,,,
+,variation,PSY-EDS-BON-S,"Editorial Set - Bone, S",1,,,,,taxable,1,20,180,,,PSY-EDS,Colour,Bone,,0,Size,S,,0,,,,
+,variation,PSY-EDS-BON-M,"Editorial Set - Bone, M",1,,,,,taxable,1,20,180,,,PSY-EDS,Colour,Bone,,0,Size,M,,0,,,,
+,variation,PSY-EDS-BON-L,"Editorial Set - Bone, L",1,,,,,taxable,1,20,180,,,PSY-EDS,Colour,Bone,,0,Size,L,,0,,,,
+,variation,PSY-EDS-BON-XL,"Editorial Set - Bone, XL",1,,,,,taxable,1,20,180,,,PSY-EDS,Colour,Bone,,0,Size,XL,,0,,,,
+,variable,PSY-WFD,Washed Flare Denim,1,0,visible,"A faded charcoal wash with a long clean flare for a sharper, more elevated streetwear silhouette.","Washed flare denim with a long, clean leg.",taxable,1,,,Denim,https://raw.githubusercontent.com/ecomaura/psychart/main/wp-theme/psychart/assets/img/demo/denim.jpg,,Colour,Charcoal,1,0,Size,"S, M, L, XL",1,0,in,,"100% cotton denim. Wash cold, inside out.","Fitted through the hip, flared from the knee."
+,variation,PSY-WFD-CHA-S,"Washed Flare Denim - Charcoal, S",1,,,,,taxable,1,20,120,,,PSY-WFD,Colour,Charcoal,,0,Size,S,,0,,,,
+,variation,PSY-WFD-CHA-M,"Washed Flare Denim - Charcoal, M",1,,,,,taxable,1,20,120,,,PSY-WFD,Colour,Charcoal,,0,Size,M,,0,,,,
+,variation,PSY-WFD-CHA-L,"Washed Flare Denim - Charcoal, L",1,,,,,taxable,1,20,120,,,PSY-WFD,Colour,Charcoal,,0,Size,L,,0,,,,
+,variation,PSY-WFD-CHA-XL,"Washed Flare Denim - Charcoal, XL",1,,,,,taxable,1,20,120,,,PSY-WFD,Colour,Charcoal,,0,Size,XL,,0,,,,

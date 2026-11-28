@@ -483,3 +483,22 @@ h1,h2,h3,h4,p{margin:0}
   .woocommerce-account.logged-in .woocommerce-MyAccount-navigation a{display:block;border:0;border-bottom:1px solid var(--psy-line);background:none;padding:14px 0}
   .woocommerce-account.logged-in .woocommerce-MyAccount-navigation .is-active a{background:none;color:var(--psy-ink);font-weight:700}
 }
+
+/* ===== Phase 6: QA polish ===== */
+.psy-qty button{width:38px;height:38px}
+.psy-qty span{min-width:30px}
+/* Sticky header and drawers sit below the WordPress admin bar when it is shown. */
+body.admin-bar .psy-header{top:32px}
+body.admin-bar .psy-drawer{top:32px}
+body.admin-bar .psy-search{top:32px}
+@media (max-width:782px){body.admin-bar .psy-header,body.admin-bar .psy-drawer,body.admin-bar .psy-search{top:46px}}
+@media (max-width:600px){body.admin-bar .psy-header{top:0}body.admin-bar .psy-drawer,body.admin-bar .psy-search{top:0}}
+.psy-main:focus{outline:0}
+@media (max-width:360px){.psy-grid{gap:24px 8px}.psy-btn{padding:0 18px;letter-spacing:.18em}}
+@media (min-width:700px) and (max-width:899px){
+  .psy-container{padding-inline:32px}
+  .psy-news__card{padding:44px 40px}
+  .psy-contact__form{padding:32px 28px}
+}
+@media (min-width:1400px){:root{--psy-max:1360px}}
+@media print{.psy-header,.psy-footer,.psy-news,.psy-drawer,.psy-search,.psy-scrim{display:none!important}body{background:#fff}}

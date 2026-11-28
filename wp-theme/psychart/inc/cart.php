@@ -96,7 +96,15 @@ function psychart_cart_update() {
 		if ( 0 === $qty ) {
 			WC()->cart->remove_cart_item( $key );
 		} else {
-			WC()->cart->set_quantity( $key, $qty, true );
+			$item    = WC()->cart->get_cart_item( $key );
+			$product = isset( $item['data'] ) ? $item['data'] : null;
+			$valid   = apply_filters( 'woocommerce_update_cart_validation', true, $key, $item, $qty );
+			if ( $valid && $product && $qty > (int) $item['quantity'] && ! $product->backorders_allowed() && $product->managing_stock() && ! $product->has_enough_stock( $qty ) ) {
+				$valid = false;
+			}
+			if ( $valid ) {
+				WC()->cart->set_quantity( $key, $qty, true );
+			}
 		}
 		WC()->cart->calculate_totals();
 	}

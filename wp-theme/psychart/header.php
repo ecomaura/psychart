@@ -42,4 +42,4 @@
 <?php get_template_part( 'template-parts/drawer-bag' ); ?>
 <div class="psy-scrim" data-psy-close hidden></div>
 
-<main id="main" class="psy-main">
+<main id="main" class="psy-main" tabindex="-1">

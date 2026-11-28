@@ -118,7 +118,7 @@
   var more = $('[data-psy-search-more]');
   var timer, reqId = 0;
 
-  function esc(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function setStatus(text) { msg.textContent = text; status.classList.remove('is-hidden'); results.innerHTML = ''; more.hidden = true; }
 
   input.addEventListener('input', function () {

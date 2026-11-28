@@ -1,4 +1,4 @@
-# PSYCHART.CO theme (v0.5.0 — Phases 0 to 5)
+# PSYCHART.CO theme (v1.0.0 — Phases 0 to 6)
 
 Classic PHP theme for WooCommerce. No build step.
 
@@ -64,3 +64,10 @@ Simple (non-variable) products also work: no colour/size pickers, just Add to ba
   - FAQ and Shipping & Returns: the bundled copy is placeholder text. Writing anything in the page editor replaces it. FAQ defaults can also be changed with the `psychart_faq_items` filter.
   - Contact: form posts to `admin-post.php`, nonce + honeypot + 1-per-minute limit per IP, sends with `wp_mail()` to Customize > About page > Contact form recipient (default: admin email). Hook `psychart_contact_sent` to log or forward. Use an SMTP plugin on hosts where `wp_mail()` is unreliable.
 - `404.php`: Shop / Home / Search.
+
+## Phase 6: QA and handover
+- Install, demo content and customisation: `docs/INSTALL.md`. Browser test list: `docs/QA-CHECKLIST.md`.
+- `demo/demo-products.csv`: 3 variable products for WooCommerce's importer.
+- `inc/performance.php`: drops emoji, oEmbed discovery and (on home, shop, product and 404) block-editor CSS.
+- Fixes: bag quantity increases now respect stock; live-search output escapes quotes; skip link focuses `<main>`; header and drawers clear the admin bar; larger bag +/- targets; tablet and print polish.
+- `screenshot.png` for Appearance > Themes.
